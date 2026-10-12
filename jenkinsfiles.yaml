@@ -68,12 +68,33 @@ pipeline {
                 '''
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                    sed "s/IMAGE_TAG/${IMAGE_TAG}/g" deployment.yaml > deployment-final.yaml
+
+                    kubectl apply -f deployment-final.yaml
+                    kubectl apply -f svc.yaml
+                '''
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh '''
+                    kubectl get deployment
+                    kubectl get pods
+                    kubectl get svc
+                '''
+            }
+        }
     }
 
     post {
 
         success {
-            echo 'Docker image successfully pushed to Docker Hub'
+            echo 'Docker image pushed and application deployed successfully'
         }
 
         failure {
