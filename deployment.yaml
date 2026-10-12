@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: vicky13-container
-          image: vickydoc13/vicky13-image:IMAGE_TAG
+          image: vickydoc13/vicky13:IMAGE_TAG
 
           ports:
             - containerPort: 8080
